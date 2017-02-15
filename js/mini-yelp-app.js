@@ -15,7 +15,7 @@ var getYelpData = function() {
   var yelp_url = 'http://api.yelp.com/v2/search';
   var parameters = {
     oauth_consumer_key: YELP_KEY,
-    oauth_token: YELP_TOKEN, // Problem child atm...
+    oauth_token: YELP_TOKEN,
     oauth_nonce: nonce_generate(),
     oauth_timestamp: Math.floor(Date.now() / 1000),
     oauth_signature_method: 'HMAC-SHA1',
@@ -47,4 +47,4 @@ var getYelpData = function() {
     .fail(function () {
       console.log("Data could not be retrieved from Yelp API");
     });
-}
+};

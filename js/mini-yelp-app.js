@@ -11,7 +11,6 @@ var getYelpData = function() {
     YELP_KEY_SECRET = "eWwJXkpiSzV83uz-oetgkaZEt6M",  // goes into oauthSignature.generate() method
     YELP_TOKEN_SECRET = "FSyNzwQFbBtId5RE4By7Ziy2mIU"; // goes into oauthSignature.generate() method
 
-
   var yelp_url = 'http://api.yelp.com/v2/search';
   var parameters = {
     oauth_consumer_key: YELP_KEY,
@@ -30,7 +29,6 @@ var getYelpData = function() {
   var encodedSignature = oauthSignature.generate('GET', yelp_url, parameters,
     YELP_KEY_SECRET, YELP_TOKEN_SECRET);
 
-
   parameters.oauth_signature = encodedSignature;
   $.ajax({
     url: yelp_url,
@@ -38,13 +36,21 @@ var getYelpData = function() {
     cache: true,
     dataType: 'jsonp',
     jsonpCallback: 'cb',
-    success: function (results) {
-
-      console.log("success");
-
+    success: function (response) {
+      //console.log(response);
+      //console.dir(response);
     }
-  })
-    .fail(function () {
-      console.log("Data could not be retrieved from Yelp API");
-    });
+  }).done( function(response){
+    //console.log(response);
+    console.log(response.businesses[0].name);
+  }).fail(function(response){
+    console.log("Data could not be retrieved from Yelp API");
+  }).always(function(response){
+    console.log(response);
+  });
+
+  function cb(response) {
+    console.log("cb");
+  }
+
 };

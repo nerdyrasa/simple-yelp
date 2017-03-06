@@ -6,7 +6,9 @@
 </head>
 <body>
 <h1>Mini Yelp API App</h1>
-<p>Retrieve data from yelp. Open up console.</p>
+
+<div id="yelpInfo"></div>
+
 <script
         src="https://code.jquery.com/jquery-3.1.1.min.js"
         integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
@@ -14,7 +16,8 @@
 <script src="js/oauth-signature.min.js"></script>
 <script src="js/mini-yelp-app.js"></script>
 <script>
-    getYelpData();
+    getYelpData('madison-childrens-museum-madison');
+    getYelpData('bogus-id-madison-childrens-museum-madison');
 </script>
 
 </body>

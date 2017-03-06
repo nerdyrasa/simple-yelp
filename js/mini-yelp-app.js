@@ -1,6 +1,4 @@
-var getYelpData = function() {
-
-  var address = 'Kenosha';
+var getYelpData = function (yelpId) {
 
   function nonce_generate() {
     return (Math.floor(Math.random() * 1e12).toString());
@@ -11,7 +9,8 @@ var getYelpData = function() {
     YELP_KEY_SECRET = "eWwJXkpiSzV83uz-oetgkaZEt6M",  // goes into oauthSignature.generate() method
     YELP_TOKEN_SECRET = "FSyNzwQFbBtId5RE4By7Ziy2mIU"; // goes into oauthSignature.generate() method
 
-  var yelp_url = 'http://api.yelp.com/v2/search';
+  var yelp_url = 'https://api.yelp.com/v2/business/' + yelpId;
+
   var parameters = {
     oauth_consumer_key: YELP_KEY,
     oauth_token: YELP_TOKEN,
@@ -19,11 +18,7 @@ var getYelpData = function() {
     oauth_timestamp: Math.floor(Date.now() / 1000),
     oauth_signature_method: 'HMAC-SHA1',
     oauth_version: '1.0',
-    callback: 'cb',
-    location: address,
-    term: 'active',
-    category_filter: 'restaurants',
-    limit: 20
+    callback: 'cb'
   };
 
   var encodedSignature = oauthSignature.generate('GET', yelp_url, parameters,
@@ -31,26 +26,18 @@ var getYelpData = function() {
 
   parameters.oauth_signature = encodedSignature;
   $.ajax({
-    url: yelp_url,
-    data: parameters,
-    cache: true,
-    dataType: 'jsonp',
-    jsonpCallback: 'cb',
-    success: function (response) {
-      //console.log(response);
-      //console.dir(response);
-    }
-  }).done( function(response){
-    //console.log(response);
-    console.log(response.businesses[0].name);
-  }).fail(function(response){
-    console.log("Data could not be retrieved from Yelp API");
-  }).always(function(response){
-    console.log(response);
-  });
-
-  function cb(response) {
-    console.log("cb");
-  }
-
+      url: yelp_url,
+      data: parameters,
+      cache: true,
+      dataType: 'jsonp',
+      jsonpCallback: 'cb'
+    }).done(function (response) {
+      var elem = document.getElementById('yelpInfo');
+      var newContent = document.createTextNode("Yelp Rating: " + response.rating + "/5");
+      elem.appendChild(newContent); //add the text node to the  div.
+    }).fail(function (response) {
+      // If the ajax call fails, then the yelp data will not be displayed.
+      console.log("Data could not be retrieved from Yelp API");
+    });
 };
+
